@@ -1,111 +1,118 @@
-# WhatsApp Bot - Atendimento Automático
+# 🤖 WhatsApp Bot - Atendimento Automático
 
 ![Node](https://img.shields.io/badge/Node.js-20+-green)
 ![Status](https://img.shields.io/badge/status-estável-brightgreen)
 ![License](https://img.shields.io/badge/license-Uso%20Interno-blue)
 
-Bot de atendimento automático para WhatsApp desenvolvido em Node.js utilizando a biblioteca @wppconnect-team/wppconnect.
+Bot de atendimento automático para WhatsApp utilizando WPPConnect, com controle de fluxo, janela de 24h e envio automatizado de cardápios.
 
 ---
 
-## 🚀 Funcionalidades
+## 🚀 O que esse bot faz (na prática)
 
-- Saudação automática (Bom dia / Boa tarde / Boa noite)
-- Resposta automática para qualquer mensagem recebida
-- Verificação de horário de funcionamento
-- Aviso automático fora do horário comercial
-- Envio automático de cardápio
-- Respeito à janela de 24 horas do WhatsApp
-- Registro básico de clientes
-- Estrutura preparada para expansão
-
----
-
-## 🛠 Stack Tecnológica
-
-- Node.js
-- @wppconnect-team/wppconnect
-- PM2 (para produção)
+- Responde automaticamente qualquer mensagem recebida  
+- Envia saudação inteligente baseada no horário  
+- Respeita a janela de 24h (evita spam)  
+- Bloqueia respostas fora do horário comercial  
+- Envia cardápio por comando:
+  - `cardapio` ou `cardápio`
+  - `marmita`
+- Envia imagens automaticamente  
+- Registra última interação do cliente  
 
 ---
 
-## 📦 Requisitos do Sistema
+## 🧠 Regras de Negócio
 
-- Node.js 20+ (LTS recomendado)
-- 4GB de RAM mínimo
-- Internet estável
-- Windows 10/11 ou Linux
-- Computador configurado para não entrar em suspensão
-
----
-
-## 🔧 Instalação Local
-
-Clone o repositório:
-
-git clone https://github.com/FonsecaEduR/whatsapp-bot.git
-
-Acesse a pasta do projeto:
-
-cd whatsapp-bot
-
-Instale as dependências:
-
-npm install
-
-Execute o bot:
-
-node server.js
-
-Escaneie o QR Code exibido no terminal com o WhatsApp.
+### 📩 Respostas automáticas
+O bot responde apenas mensagens que:
+- Não são de grupo  
+- Não foram enviadas pelo próprio bot  
+- Possuem conteúdo de texto válido  
 
 ---
 
-## ▶ Execução em Produção (Recomendado)
+### ⏱ Janela de 24 horas
+Após responder um cliente, o bot só volta a responder automaticamente após 24 horas.
 
-Instale o PM2 globalmente:
-
-npm install -g pm2
-
-Inicie o bot:
-
-pm2 start server.js
-pm2 save
-
-Para visualizar logs:
-
-pm2 logs
-
-Para reiniciar:
-
-pm2 restart server.js
+Arquivo responsável:
+clientes_log.json
 
 ---
 
-## 🏗 Arquitetura Simplificada
-
-Usuário WhatsApp
-        ↓
-WPPConnect (Chromium)
-        ↓
-server.js
-        ↓
-Regras de Negócio
-        ↓
-Envio de Respostas / Cardápio
+### 📅 Dias de funcionamento
+- Segunda a sexta → atendimento normal  
+- Sábado e domingo → mensagem de indisponibilidade  
 
 ---
 
-## ⏰ Configuração de Horário
+### 🕒 Horário
+Definido diretamente no código:
 
-O horário de funcionamento é configurado diretamente no arquivo server.js.
+- Atendimento geral: 08h às 22h  
+- Almoço: 11h às 14h  
+- Jantar: 18h às 20h30  
 
-Exemplo:
+---
 
-const horarioInicio = 8;
-const horarioFim = 18;
+### 🍽 Comandos disponíveis
 
-Fora desse intervalo, o bot envia mensagem automática informando indisponibilidade.
+| Comando   | Ação                         |
+|----------|------------------------------|
+| cardapio | Envia cardápio normal        |
+| cardápio | Envia cardápio normal        |
+| marmita  | Envia cardápio de marmitas   |
+
+---
+
+## 🛠 Stack
+
+- Node.js  
+- WPPConnect  
+- PM2 (produção)  
+
+---
+
+## 📦 Requisitos
+
+- Node.js 20+  
+- Google Chrome instalado (recomendado)  
+- 4GB RAM mínimo  
+- Internet estável  
+- Máquina sem suspensão automática  
+
+---
+
+## 🔧 Instalação (passo a passo)
+
+git clone https://github.com/FonsecaEduR/whatsapp-bot.git  
+cd whatsapp-bot  
+npm install  
+node server.js  
+
+➡ Escaneie o QR Code com o WhatsApp  
+
+---
+
+## ⚠️ Instalação em outra máquina
+
+- Será necessário escanear o QR Code novamente  
+- A sessão NÃO é compartilhada entre máquinas  
+- A pasta tokens/ será recriada automaticamente  
+
+---
+
+## ▶ Execução em produção (PM2)
+
+npm install -g pm2  
+pm2 start server.js --name whatsapp-bot  
+pm2 save  
+
+### Comandos úteis:
+
+pm2 logs  
+pm2 restart whatsapp-bot  
+pm2 stop whatsapp-bot  
 
 ---
 
@@ -113,63 +120,78 @@ Fora desse intervalo, o bot envia mensagem automática informando indisponibilid
 
 whatsapp-bot/
 │
-├── server.js
-├── package.json
-├── package-lock.json
-├── README.md
-├── clientes.json
-├── clientes_log.json
-├── midia/
-└── tokens/ (ignorado no Git)
+├── server.js  
+├── package.json  
+├── README.md  
+├── clientes_log.json  
+├── midia/  
+│   ├── cardapio1.jpg  
+│   ├── cardapio2.jpg  
+│   ├── marmita1.jpg  
+│   └── marmita2.jpg  
+└── tokens/ (ignorado no git)  
 
 ---
 
-## 🔐 Segurança
+## 🖼 Arquivos obrigatórios
 
-- A pasta tokens/ não deve ser versionada.
-- O arquivo .env (caso utilizado) deve estar no .gitignore.
-- Não versionar node_modules.
-- Não executar o bot como administrador.
-- Garantir que o computador não entre em suspensão.
+Certifique-se de que existem:
 
----
+/midia/cardapio1.jpg  
+/midia/cardapio2.jpg  
+/midia/marmita1.jpg  
+/midia/marmita2.jpg  
 
-## ☁ Deploy em Outro Computador
-
-1. Instalar Node.js 20+
-2. Clonar o repositório
-3. Executar npm install
-4. Executar node server.js
-5. Escanear QR Code novamente
-
-A sessão é vinculada à máquina.
+Se não existirem, o bot não enviará os cardápios.
 
 ---
 
-## 📌 Controle de Versão
+## 🔐 Boas práticas de segurança
 
-Versão inicial estável para atendimento automatizado.
+- Nunca subir:
+  - tokens/  
+  - node_modules/  
+  - .env  
+- Não rodar como administrador  
+- Evitar VPS sem interface gráfica  
 
-Sugestão de versionamento futuro:
-v1.0.0 - Base funcional
-v1.1.0 - Melhorias de fluxo
-v2.0.0 - Integração com API externa
+---
+
+## 🧩 Arquitetura
+
+WhatsApp  
+↓  
+WPPConnect (Chromium)  
+↓  
+server.js  
+↓  
+Regras de negócio  
+↓  
+Resposta automática  
+
+---
+
+## 🚧 Limitações atuais
+
+- Não utiliza banco de dados (apenas JSON local)  
+- Não possui painel administrativo  
+- Sessão depende da máquina  
 
 ---
 
 ## 🗺 Roadmap
 
-- Implementar banco de dados real
-- Integração com sistema de pedidos
-- Dashboard administrativo
-- Integração com API de pagamento
-- Deploy em VPS
-- Containerização com Docker
+- Banco de dados (MongoDB ou PostgreSQL)  
+- Dashboard web  
+- Integração com pedidos  
+- API externa  
+- Docker  
+- Deploy em VPS  
 
 ---
 
 ## 👨‍💻 Autor
 
-Eduardo Fonseca
+Eduardo Fonseca  
 
-Projeto de automação para atendimento via WhatsApp.
+Projeto focado em automação de atendimento via WhatsApp com baixo custo e alta eficiência.
